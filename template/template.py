@@ -160,12 +160,27 @@ r"""
                                                                                          |___/ 
 """
 
+def format_data(data: list[str]) -> list:
+    """_summary_
+
+    Args:
+        data (list[str]): _description_
+
+    Returns:
+        list: _description_
+    """
+    # --------------------------------
+
+    return data
+
 def get_answer_part1(data: list):
     """TODO:_summary_
 
     Args:
         data (list, optional): Input data for processing. Defaults to get_input().
     """
+
+    data = format_data(data)
 
     # --------------------------------
     # TODO: Process the data as needed
