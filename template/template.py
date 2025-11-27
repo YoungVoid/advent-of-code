@@ -138,11 +138,11 @@ def test(file_path: str, expected: int|str|None=None, test_number: int=0):
 
     if expected is not None:
         if str(answer) == str(expected):
-            yield True #console.print(Panel(f"{answer}", title=f"Test {test_number} Passed!", style="bold white on green"))
+            yield True
         else:
-            yield False #console.print(Panel(f"Expected: \n{expected} \n\nGot: \n{answer}", title=f"Test {test_number} Failed!", style="bold white on red"))
+            yield False
     else:
-         yield None #console.print(Panel(str(answer), title=f"Test {test_number} Answer", style="bold white on green"))
+         yield None
 
     yield answer
 
@@ -259,17 +259,18 @@ def main():
     #--------------------------
     # Main Run
     #--------------------------
-    console.rule("Main Run")
-    input_file_path = get_default_input_path()
+    if False:
+        console.rule("Main Run")
+        input_file_path = get_default_input_path()
 
-    try:
-        answer = get_answer_main(input_file_path)
-        print_main_answer(answer)
-    except IndexError:
-        console.print_exception()
-        console.print("[red]Error:[/red] Input data is empty or not properly formatted.")
-    except Exception:
-        console.print_exception()
+        try:
+            answer = get_answer_main(input_file_path)
+            print_main_answer(answer)
+        except IndexError:
+            console.print_exception()
+            console.print("[red]Error:[/red] Input data is empty or not properly formatted.")
+        except Exception:
+            console.print_exception()
 
 
     #--------------------------
