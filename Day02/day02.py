@@ -26,9 +26,8 @@ def is_valid_number(number_string:str) -> bool:
     
     return True
 
-def main():
-    file_path = str(input('File Path:\n>>> '))
-
+def main(file_path):
+    
     data = get_data(file_path)
   
     answer = 0
@@ -45,4 +44,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    file_path = str(input('File Path:\n>>> '))
+    main(file_path)
