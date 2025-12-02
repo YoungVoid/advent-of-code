@@ -108,6 +108,7 @@ dcl-proc MoveDial;
 
   elseif MoveDialDS.newPosition = 0;
     MoveDialDS.password_increments += 1;
+    
   endif;
 
   return MoveDialDS;
