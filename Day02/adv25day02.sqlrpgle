@@ -41,6 +41,7 @@ Dcl-Proc ADV25DAY02;
 
   if sqlcode <> 0;
     snd-msg *info 'SQLCODE <> 0 - Data not Read' %target(*pgmbdy:1) ;
+    snd-msg *info 'FilePath: ' + filePath %target(*pgmbdy:1) ;
     return;
   endif;
 
@@ -58,6 +59,7 @@ Dcl-Proc ADV25DAY02;
   endfor;
 
   snd-msg *info 'sumTotal: ' + %char(sumTotal) %target(*pgmbdy:1) ;
+  // snd-msg *info %char(sumTotal) %target(*pgmbdy:1) ;
 
   return;
 
@@ -77,6 +79,7 @@ Dcl-Proc GetSumOfInvalids;
 
   for number=rangeDS.From to rangeDS.To;
     if not isValidNumber(number);
+      snd-msg *info 'Invalid: ' + %char(%dec(number:15:0)) %target(*pgmbdy:1) ;
       sumOfInvalids += number;
     endif;
   endfor;
@@ -92,29 +95,79 @@ dcl-proc isValidNumber;
   end-pi;
 
   dcl-s numberString varchar(15);
-  dcl-s firstHalf varchar(8);
-  dcl-s secondHalf varchar(8);
-  dcl-s halfwayPos packed(2:0);
+  dcl-s firstPart varchar(8);
+  dcl-s CompareVal1 varchar(8);
+  dcl-s CompareVal2 varchar(8);
+  dcl-s splitPos packed(2:0);
+  dcl-s isWholeStringRepeating IND;
+
+  dcl-s splitCount packed(2);
+  dcl-s splitComparison packed(2);
+  dcl-s splitPosDisplace packed(2);
+
+  dcl-s lennumber packed(4);
+  dcl-s lennumberstring packed(4);
 
   numberString = %char(number);
 
+  for splitCount = 2 to %len(numberString);
+    lennumber = %len(number);
+    lennumberstring = %len(numberString);
+    splitPos = %len(numberString) / splitCount;
+
+    if splitPos = 0 or %rem(%len(numberString):splitCount) > 0;
+      iter;
+    endif;
+
+    firstPart = %subst(numberString:1:splitPos);
+    isWholeStringRepeating = True;
+    for splitComparison = 1 to splitCount-1;
+      // if split into 3 parts, first comparison should not displace, 2nd displace by magnitude of splitPos
+      splitPosDisplace = splitPos * (splitComparison-1) ;
+      CompareVal1 = %subst(numberString:1+splitPosDisplace:splitPos);
+      CompareVal2 = %subst(numberString:1+splitPos+splitPosDisplace:splitPos);
+
+      if firstPart = CompareVal1 and CompareVal1 = CompareVal2 and isWholeStringRepeating;
+        isWholeStringRepeating = True;
+      else;
+        isWholeStringRepeating = False;
+        leave;
+      endif;
+    endfor;
+
+    if isWholeStringRepeating;
+      return False;
+    endif;
+
+  endfor;
+
+  return True;
+
+
+  // Part 1 saved
+
   // value 1 / 2 = 0 -- invalid array below then
   // uneven wont be sequence either
-  if %len(numberString) <= 1 or %rem(%len(numberString):2) = 1;
-    return True;
-  endif;
+  // if %len(numberString) <= 1;// or %rem(%len(numberString):2) = 1;
+  //   return True;
+  // endif;
 
-  halfwayPos = %len(numberString) / 2;
-  firstHalf = %subst(numberString:1:halfwayPos);
-  secondHalf = %subst(numberString:halfwayPos+1);
+  // halfwayPos = %len(numberString) / 2;
 
-  if firstHalf = secondHalf;
-    snd-msg *info 'Invalid: ' + numberString %target(*pgmbdy:1) ;
-    return False;
-  else;
-    return True;
-  endif;
+  // dow halfwayPos > 0;
+  //   firstHalf = %subst(numberString:1:halfwayPos);
+  //   secondHalf = %subst(numberString:halfwayPos+1:halfwayPos);
+
+  //   if firstHalf = secondHalf;
+  //     snd-msg *info 'Invalid: ' + numberString %target(*pgmbdy:1) ;
+  //     return False;
+  //   endif;
+
+  //   halfwayPos -= 1;
+  // enddo;
+  // return True;
+
+
 
 
 end-proc;
-
