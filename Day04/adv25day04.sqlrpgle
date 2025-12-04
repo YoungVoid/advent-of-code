@@ -3,6 +3,9 @@ Ctl-Opt Main(ADV25DAY04);
 Ctl-Opt dftactgrp(*no);
 Ctl-Opt option(*srcstmt:*nodebugio);
 
+dcl-c TEST_LENGTH 10;
+dcl-c INPUT_LENGTH 135;
+
 dcl-c ROW_COUNT 135;
 dcl-c COL_COUNT 135;
 
@@ -19,10 +22,7 @@ Dcl-Proc ADV25DAY04;
 
   dcl-ds Grid likeds(Grid_t);
   dcl-s answer packed(10);
-
-  dcl-s rowPos packed(3);
-  dcl-s colPos packed(3);
-  dcl-s adjacentCount Packed(1);
+  dcl-s rollsRemoved packed(10);
 
 
 
@@ -30,17 +30,13 @@ Dcl-Proc ADV25DAY04;
 
   answer = 0;
 
-  for rowPos=1 to ROW_COUNT;
-    for colPos=1 to COL_COUNT;
-      if Grid.row(rowPos).col(colPos) = '@';
-        adjacentCount = GetAdjacentCount(Grid:rowPos:colPos);
-        if adjacentCount < 4;
-          answer += 1;
-        endif;
-      endif;
+  rollsRemoved = RemoveRolls(Grid);
+  answer += rollsRemoved;
+  dow rollsRemoved > 0;
+    rollsRemoved = RemoveRolls(Grid);
+    answer += rollsRemoved;
+  enddo;
 
-    endfor;
-  endfor;
 
   snd-msg *info 'Answer: ' + %Char(answer) %target(*pgmbdy:1) ;
 
@@ -147,4 +143,32 @@ dcl-proc GetAdjacentCount;
 
   return adjacentCount;
 end-proc;
+
+dcl-proc RemoveRolls;
+  dcl-pi *n packed(10);
+    Grid likeds(Grid_t);
+  end-pi;
+
+  dcl-s rollsRemoved packed(10);
+
+  dcl-s rowPos packed(3);
+  dcl-s colPos packed(3);
+  dcl-s adjacentCount Packed(1);
+
+  for rowPos=1 to ROW_COUNT;
+    for colPos=1 to COL_COUNT;
+      if Grid.row(rowPos).col(colPos) = '@';
+        adjacentCount = GetAdjacentCount(Grid:rowPos:colPos);
+        if adjacentCount < 4;
+          Grid.row(rowPos).col(colPos) = 'x';
+          rollsRemoved += 1;
+        endif;
+      endif;
+
+    endfor;
+  endfor;
+
+  return rollsRemoved;
+
+end-proc RemoveRolls;
 
