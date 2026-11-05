@@ -1,0 +1,213 @@
+/* Using the Stylus extension, this is the css to overwrite the L&F of the website for this year*/
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: dark;
+  --bg: #090D18;
+  --surface: rgba(24, 32, 52, .78);
+  --surface-code: rgba(8, 13, 25, .88);
+  --border: rgba(160, 180, 255, .14);
+  --text: #E5EAF5;
+  --muted: #9BAAC5;
+  --heading: #B9C8FF;
+  --bold: #FFCB8B;
+  --italic: #C5A7FF;
+  --code: #83E5D5;
+  --link: #78BFFF;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 15% 10%, #242653 0, transparent 42%),
+    radial-gradient(ellipse at 85% 65%, #123D4A 0, transparent 38%),
+    var(--bg) !important;
+  color: var(--text) !important;
+  font-family: 'Manrope', sans-serif !important;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+#content {
+  max-width: 850px !important;
+  margin: 45px auto !important;
+}
+
+
+
+header, nav {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+header {
+  color: var(--muted) !important;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+}
+
+article.day-desc, form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 32px 42px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 18px 55px rgba(0,0,0,.25);
+  display: block !important;
+  width: calc(100% - 40px) !important;
+  max-width: 850px !important;
+
+  margin: 24px auto !important;
+  box-sizing: border-box;
+
+  text-align: left;
+}
+
+article h2 {
+  color: var(--heading) !important;
+  font-size: 1.55em;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+
+article p {
+  margin: 1.15em 0;
+}
+
+article strong, article b {
+  color: var(--bold) !important;
+  font-weight: 800;
+}
+
+article em, article i {
+  color: var(--italic) !important;
+}
+
+article a {
+  color: var(--link) !important;
+  text-decoration-color: rgba(120,191,255,.45);
+  text-underline-offset: 4px;
+}
+
+article code::before, code::before {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: var(--code) !important;
+  background: rgba(131,229,213,.09);
+  border: 1px solid rgba(131,229,213,.15);
+  border-radius: 5px;
+  padding: 3px 7px;
+  font-size: .88em;
+}
+
+article p code, article li code, article ul code, p code {
+  display: inline-block;
+  margin: 0 5px;
+  padding: 2px 5px;
+}
+
+article pre {
+  background: var(--surface-code) !important;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px !important;
+  overflow-x: auto;
+  line-height: 1.7;
+  box-shadow: inset 0 1px rgba(255,255,255,.025);
+}
+
+article pre code {
+  background: transparent !important;
+  border: 0;
+  padding: 0;
+  color: #D6E2F5 !important;
+  font-size: .9em;
+}
+
+article ul, article ol {
+  padding-left: 1.8em;
+}
+
+article li::marker {
+  color: #83E5D5;
+}
+
+article hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+a:hover {
+  color: #B9C8FF !important;
+}
+
+
+
+
+/* Remove glow from all emphasized text */
+article strong,
+article b,
+article em,
+article i,
+article h2,
+article a {
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+
+
+
+/* Avoid overly wide content on smaller screens */
+@media (max-width: 700px) {
+  #content {
+    width: calc(100% - 24px) !important;
+  }
+
+  article.day-desc {
+    padding: 22px 20px;
+  }
+}
+
+/* ==========================================
+   Puzzle completion and sharing sections
+   ========================================== */
+
+main > p, main > form {
+  display: block;
+  width: calc(100% - 40px);
+  max-width: 850px;
+  box-sizing: border-box;
+  margin: 16px auto !important;
+
+  padding: 18px 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, .18);
+}
+
+
+/* Keep the share links visually distinct */
+main > p .share {
+  color: var(--link);
+}
+
+main > p .share-content a {
+  margin-left: 8px;
+}
+
+/* Mobile spacing */
+@media (max-width: 600px) {
+  main > p {
+    width: calc(100% - 24px);
+    padding: 16px 18px;
+  }
+}
+
