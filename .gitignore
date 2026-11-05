@@ -1,8 +1,8 @@
 # Ignore input files
-.input
-.txt
+*.input
+*.txt
 
-.secret
+*.secret
 
 
 # Byte-compiled / optimized / DLL files
