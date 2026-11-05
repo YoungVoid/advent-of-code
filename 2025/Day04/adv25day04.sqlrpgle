@@ -171,4 +171,3 @@ dcl-proc RemoveRolls;
   return rollsRemoved;
 
 end-proc RemoveRolls;
-
