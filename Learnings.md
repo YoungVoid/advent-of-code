@@ -41,3 +41,4 @@ reflog interactions:
 - rich.print is quite costly - when running for a ton of records, printing each, it takes a significant time. Removing the print brings back to a second of runtime, as opposed to 30s+
 - `list.match(value, start=, end=)` and `list.index(value, start=, end=)` is the same thing, only `.index()` raises exception if value not found
 - `list(str)` will explode str value into a list, each digit it's own element
+- `import bisect` -> `bisect.bisect_left(sorted_list, value)` and `bisect_right` finds the position that a value would be inserted into a sorted list, ie `bisect.bisect_left([2,4,6], 5)` would return `2`.
